@@ -127,7 +127,6 @@ namespace TennisGame.Tests.Match
             IOpponentDispatcher dispatcher = Substitute.For<IOpponentDispatcher>();
             dispatcher.GetMappingForKey(Arg.Any<char>()).Returns(new OpponentsMapping(firstPlayer, secondPlayer));
 
-
             bool eventRaised = false;
 
             // Act
