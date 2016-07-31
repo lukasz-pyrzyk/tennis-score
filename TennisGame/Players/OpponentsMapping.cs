@@ -14,6 +14,7 @@ namespace TennisGame.Players
         }
 
         public Player Player { get; }
+
         public Player Opponent { get; }
     }
 }

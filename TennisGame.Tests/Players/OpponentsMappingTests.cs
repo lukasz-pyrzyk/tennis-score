@@ -38,7 +38,6 @@ namespace TennisGame.Tests.Players
             Assert.That(() => new OpponentsMapping(player, opponent), Throws.ArgumentNullException);
         }
 
-
         [Test]
         public void Ctor_ThrowsWhenOpponentIsNull()
         {
