@@ -61,8 +61,8 @@
     <Compile Include="Match\MatchFinishedArgsTests.cs" />
     <Compile Include="Match\TennisMatchTests.cs" />
     <Compile Include="Match\ScoreProcessorTests.cs" />
-    <Compile Include="Players\OpponentsMappingProviderTests.cs" />
-    <Compile Include="Players\OpponentsMappingTests.cs" />
+    <Compile Include="Match\OpponentDispatcherTests.cs" />
+    <Compile Include="Match\OpponentsMappingTests.cs" />
     <Compile Include="Players\PlayerTests.cs" />
     <Compile Include="Points\AdvantageTests.cs" />
     <Compile Include="Points\FifteenTests.cs" />

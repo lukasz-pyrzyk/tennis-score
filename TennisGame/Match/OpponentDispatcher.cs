@@ -1,14 +1,14 @@
 ﻿using System.Linq;
 using EnsureThat;
-using TennisGame.Match;
+using TennisGame.Players;
 
-namespace TennisGame.Players
+namespace TennisGame.Match
 {
-    internal class OpponentsMappingProvider : IOpponentsMappingProvider
+    internal class OpponentDispatcher : IOpponentDispatcher
     {
         private readonly OpponentsMapping[] _opponentsMapping = new OpponentsMapping[2];
 
-        public OpponentsMappingProvider(Player firstPlayer, Player secondPlayer)
+        public void RegisterCombinations(Player firstPlayer, Player secondPlayer)
         {
             Ensure.That(firstPlayer, nameof(firstPlayer)).IsNotNull();
             Ensure.That(secondPlayer, nameof(secondPlayer)).IsNotNull();

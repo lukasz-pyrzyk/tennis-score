@@ -2,8 +2,9 @@
 
 namespace TennisGame.Match
 {
-    internal interface IOpponentsMappingProvider
+    public interface IOpponentDispatcher
     {
+        void RegisterCombinations(Player firstPlayer, Player secondPlayer);
         OpponentsMapping GetMappingForKey(char key);
     }
 }

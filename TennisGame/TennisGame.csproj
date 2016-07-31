@@ -49,13 +49,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Match\IOpponentsMappingProvider.cs" />
+    <Compile Include="Match\IOpponentDispatcher.cs" />
     <Compile Include="Match\IScoreProcessor.cs" />
     <Compile Include="Match\TennisMatch.cs" />
     <Compile Include="Match\MatchFinishedArgs.cs" />
     <Compile Include="Match\ScoreProcessor.cs" />
-    <Compile Include="Players\OpponentsMapping.cs" />
-    <Compile Include="Players\OpponentsMappingProvider.cs" />
+    <Compile Include="Match\OpponentsMapping.cs" />
+    <Compile Include="Match\OpponentDispatcher.cs" />
     <Compile Include="Points\Advantage.cs" />
     <Compile Include="Points\Fifteeen.cs" />
     <Compile Include="Points\Forty.cs" />

@@ -1,28 +1,30 @@
 ﻿using NUnit.Framework;
 using Ploeh.AutoFixture;
+using TennisGame.Match;
 using TennisGame.Players;
 
-namespace TennisGame.Tests.Players
+namespace TennisGame.Tests.Match
 {
     /// <summary>
-    /// Unit tests for <see cref="OpponentsMappingProvider"/>
+    /// Unit tests for <see cref="OpponentDispatcher"/>
     /// </summary>
     [TestFixture]
-    public class OpponentsMappingProviderTests
+    public class OpponentDispatcherTests
     {
         private readonly Fixture _fixture = new Fixture();
 
         [Test]
         [TestCase((char)123, (char)12312)]
         [TestCase((char)0, (char)12312)]
-        public void Ctor_GetMappingForKey__ReturnsCorrectMappings(char firstKey, char secondKey)
+        public void RegisterCombinations_GetMappingForKey__ReturnsCorrectMappings(char firstKey, char secondKey)
         {
             // Arrange
             Player player = _fixture.Build<Player>().With(x => x.Key, firstKey).Create();
             Player opponent = _fixture.Build<Player>().With(x => x.Key, secondKey).Create();
 
             // Act
-            OpponentsMappingProvider mappingprovider = new OpponentsMappingProvider(player, opponent);
+            OpponentDispatcher mappingprovider = new OpponentDispatcher();
+            mappingprovider.RegisterCombinations(player, opponent);
             OpponentsMapping mapping = mappingprovider.GetMappingForKey(firstKey);
 
             // Assert
@@ -31,14 +33,15 @@ namespace TennisGame.Tests.Players
         }
 
         [Test]
-        public void Ctor_GetMappingForKey_ReturnsNullWhenCannotFindASpecificPlayer()
+        public void RegisterCombinations_GetMappingForKey_ReturnsNullWhenCannotFindASpecificPlayer()
         {
             // Arrange
             Player player = _fixture.Build<Player>().With(x => x.Key, 0).Create();
-            Player opponent = _fixture.Build<Player>().With(x => x.Key, 0).Create();
+            Player opponent = _fixture.Build<Player>().With(x => x.Key, 1).Create();
 
             // Act
-            OpponentsMappingProvider mappingprovider = new OpponentsMappingProvider(player, opponent);
+            OpponentDispatcher mappingprovider = new OpponentDispatcher();
+            mappingprovider.RegisterCombinations(player, opponent);
             OpponentsMapping mapping = mappingprovider.GetMappingForKey(char.MaxValue);
 
             // Assert
@@ -46,7 +49,7 @@ namespace TennisGame.Tests.Players
         }
 
         [Test]
-        public void Ctor_GetMappingForKey_ThrowsWhenFindTwoPlayersWithSameKey()
+        public void RegisterCombinations_GetMappingForKey_ThrowsWhenFindTwoPlayersWithSameKey()
         {
             // Arrange
             char key = _fixture.Create<char>();
@@ -54,32 +57,33 @@ namespace TennisGame.Tests.Players
             Player opponent = _fixture.Build<Player>().With(x => x.Key, key).Create();
 
             // Act
-            OpponentsMappingProvider mappingprovider = new OpponentsMappingProvider(player, opponent);
+            OpponentDispatcher mappingprovider = new OpponentDispatcher();
+            mappingprovider.RegisterCombinations(player, opponent);
 
             // Assert
             Assert.That(() => mappingprovider.GetMappingForKey(key), Throws.InvalidOperationException);
         }
 
         [Test]
-        public void Ctor_ThrowsWhenFirstPlayerIsNull()
+        public void RegisterCombinations_ThrowsWhenFirstPlayerIsNull()
         {
             // Arrange
             Player player = null;
             Player opponent = _fixture.Create<Player>();
 
             // Act and assert
-            Assert.That(() => new OpponentsMappingProvider(player, opponent), Throws.ArgumentNullException);
+            Assert.That(() => new OpponentDispatcher().RegisterCombinations(player, opponent), Throws.ArgumentNullException);
         }
 
         [Test]
-        public void Ctor_ThrowsWhenSecondPlayerIsNull()
+        public void RegisterCombinations_ThrowsWhenSecondPlayerIsNull()
         {
             // Arrange
             Player player = _fixture.Create<Player>();
             Player opponent = null;
 
             // Act and assert
-            Assert.That(() => new OpponentsMappingProvider(player, opponent), Throws.ArgumentNullException);
+            Assert.That(() => new OpponentDispatcher().RegisterCombinations(player, opponent), Throws.ArgumentNullException);
         }
     }
 }

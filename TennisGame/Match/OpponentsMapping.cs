@@ -1,8 +1,9 @@
 ﻿using EnsureThat;
+using TennisGame.Players;
 
-namespace TennisGame.Players
+namespace TennisGame.Match
 {
-    internal class OpponentsMapping
+    public class OpponentsMapping
     {
         public OpponentsMapping(Player player, Player opponent)
         {

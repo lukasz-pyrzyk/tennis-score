@@ -1,8 +1,9 @@
 ﻿using NUnit.Framework;
 using Ploeh.AutoFixture;
+using TennisGame.Match;
 using TennisGame.Players;
 
-namespace TennisGame.Tests.Players
+namespace TennisGame.Tests.Match
 {
     /// <summary>
     /// Unit tests for <see cref="OpponentsMapping"/>

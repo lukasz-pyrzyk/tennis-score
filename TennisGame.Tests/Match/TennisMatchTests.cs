@@ -84,48 +84,56 @@ namespace TennisGame.Tests.Match
         public void ProcessPoint_ProcessPointForFirstPlayer()
         {
             // Arrange
-            Player firstPlater = _fixture.Create<Player>();
+            Player firstPlayer = _fixture.Create<Player>();
             Player secondPlayer = _fixture.Create<Player>();
             IScoreProcessor processor = Substitute.For<IScoreProcessor>();
+            IOpponentDispatcher dispatcher = Substitute.For<IOpponentDispatcher>();
+            dispatcher.GetMappingForKey(firstPlayer.Key).Returns(new OpponentsMapping(firstPlayer, secondPlayer));
 
             // Act
-            TennisMatch match = new TennisMatch(firstPlater, secondPlayer, processor);
-            match.ProcessPoint(firstPlater.Key);
+            TennisMatch match = new TennisMatch(firstPlayer, secondPlayer, processor, dispatcher);
+            match.ProcessPoint(firstPlayer.Key);
 
             // Assert
-            processor.Received(1).ProcessGoal(firstPlater, secondPlayer);
+            processor.Received(1).ProcessGoal(firstPlayer, secondPlayer);
         }
 
         [Test]
         public void ProcessPoint_ProcessPointForSecondPlayer()
         {
             // Arrange
-            Player firstPlater = _fixture.Create<Player>();
+            Player firstPlayer = _fixture.Create<Player>();
             Player secondPlayer = _fixture.Create<Player>();
             IScoreProcessor processor = Substitute.For<IScoreProcessor>();
+            IOpponentDispatcher dispatcher = Substitute.For<IOpponentDispatcher>();
+            dispatcher.GetMappingForKey(secondPlayer.Key).Returns(new OpponentsMapping(secondPlayer, firstPlayer));
 
             // Act
-            TennisMatch match = new TennisMatch(firstPlater, secondPlayer, processor);
+            TennisMatch match = new TennisMatch(firstPlayer, secondPlayer, processor, dispatcher);
             match.ProcessPoint(secondPlayer.Key);
 
             // Assert
-            processor.Received(1).ProcessGoal(secondPlayer, firstPlater);
+            processor.Received(1).ProcessGoal(secondPlayer, firstPlayer);
         }
 
         [Test]
         public void ProcessPoint_StopsMatchAndCallsEvent()
         {
             // Arrange
-            Player firstPlater = _fixture.Create<Player>();
+            Player firstPlayer = _fixture.Create<Player>();
             Player secondPlayer = _fixture.Create<Player>();
             IScoreProcessor processor = Substitute.For<IScoreProcessor>();
-            processor.ProcessGoal(firstPlater, secondPlayer).Returns(true);
+            processor.ProcessGoal(firstPlayer, secondPlayer).Returns(true);
+            IOpponentDispatcher dispatcher = Substitute.For<IOpponentDispatcher>();
+            dispatcher.GetMappingForKey(Arg.Any<char>()).Returns(new OpponentsMapping(firstPlayer, secondPlayer));
+
+
             bool eventRaised = false;
 
             // Act
-            TennisMatch match = new TennisMatch(firstPlater, secondPlayer, processor);
+            TennisMatch match = new TennisMatch(firstPlayer, secondPlayer, processor, dispatcher);
             match.OnFinish += (sender, args) => eventRaised = true;
-            match.ProcessPoint(firstPlater.Key);
+            match.ProcessPoint(firstPlayer.Key);
 
             // Assert
             Assert.That(match.IsStarted, Is.False);

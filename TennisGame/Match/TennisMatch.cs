@@ -6,20 +6,22 @@ namespace TennisGame.Match
     internal class TennisMatch
     {
         private readonly IScoreProcessor _scoreProcessor;
-        private readonly IOpponentsMappingProvider _opponents;
+        private readonly IOpponentDispatcher _opponentDispatcher;
 
         public TennisMatch(Player firstPlayer, Player secondPlayer) :
-            this(firstPlayer, secondPlayer, new ScoreProcessor())
+            this(firstPlayer, secondPlayer, new ScoreProcessor(), new OpponentDispatcher())
         {
         }
 
-        internal TennisMatch(Player firstPlayer, Player secondPlayer, IScoreProcessor processor)
+        internal TennisMatch(Player firstPlayer, Player secondPlayer, IScoreProcessor processor, IOpponentDispatcher dispatcher)
         {
             FirstPlayer = firstPlayer;
             SecondPlayer = secondPlayer;
 
-            _opponents = new OpponentsMappingProvider(firstPlayer, secondPlayer);
             _scoreProcessor = processor;
+            _opponentDispatcher = dispatcher;
+
+            _opponentDispatcher.RegisterCombinations(firstPlayer, secondPlayer);
         }
 
         public bool IsStarted { get; private set; }
@@ -37,7 +39,7 @@ namespace TennisGame.Match
 
         public void ProcessPoint(char userKey)
         {
-            OpponentsMapping opponentsMapping = _opponents.GetMappingForKey(userKey);
+            OpponentsMapping opponentsMapping = _opponentDispatcher.GetMappingForKey(userKey);
 
             if (opponentsMapping != null)
             {
