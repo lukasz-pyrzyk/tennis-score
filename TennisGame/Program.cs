@@ -43,9 +43,13 @@ namespace TennisGame
         private static void PrintMessage()
         {
             Console.Clear();
+            if (_tennisMatch.IsStarted)
+            {
+                Console.WriteLine($"{_tennisMatch.FirstPlayer.LastPoint}:{_tennisMatch.SecondPlayer.LastPoint}");
+            }
 
-            Console.WriteLine($"{Translations.Server}= {_tennisMatch.FirstPlayer.LastPoint}");
-            Console.WriteLine($"{Translations.Receiver}= {_tennisMatch.SecondPlayer.LastPoint}");
+            Console.WriteLine($"{Translations.Server}= 1");
+            Console.WriteLine($"{Translations.Receiver}= 2");
             Console.Write(Translations.SelectUser);
         }
     }
